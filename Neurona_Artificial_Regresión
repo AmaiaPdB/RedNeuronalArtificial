@@ -1,0 +1,73 @@
+# OBJETIVO: Vamos a crear el sistema de Machine Learning más sencillo: 1 capa, de 1 neurona, con 1 input.  
+
+## 1º: Importar las librerías necesarias. 
+
+import tensorflow as tf
+from tensorflow import keras
+import numpy as np
+
+## 2º: Definir el modelo. 
+
+### Existen 3 formas de crear los modelos con TensorFlow: 
+#### - Sequential Model: modelos simples
+#### - Functional API: modelos complejos con múltiples inputs y outputs
+#### - Model Subclassing: modelos totalmente personalizables
+
+### Ejemplo con 1 neurona, 1 capa y 1 input y sin función de activación:
+#### - "nombre del modelo" = tf.keras.Sequential()
+#### - Defino cada capa como [keras.layers. "tipo de capa"]
+#### - En este ejemplo se añade una capa de tipo Dense, con una unidad o neurona y con un solo input de entrada.
+
+model = tf.keras.Sequential([keras.layers.Dense(units=1, input_shape=[1])])
+
+## 3º: Compilar el modelo.
+
+### Compilar el modelo significa definir la función de error o pérdida y el algoritmo de optimización. 
+###Cada situación tendrá una función de pérdida y una de optimización óptimas.
+###Para definirlas, se utiliza "nombre del modelo".compile (optimizer= "nombre del optimizador", loss= "nombre de la función de pérdida").
+### En este ejemplo utilizamos para el modelo llamado "modelo" la función de optimización SGD y como función de pérdida el error cuadrático medio.
+
+model.compile(optimizer='sgd', loss='mean_squared_error')
+
+## 4º: Introducción del dataset de entrenamiento y de validación.
+
+### La red pide de entrada un tensor. Utilizaremos como tensor de entrada una matriz, es decir, un array. 
+### Hemos importado en el primer paso la librería numpy dado que es muy útil manejar arrays, en especial su funcion np.array(), 
+### a la cual le podemos pasar de argumento una lista y nos la transforma en array.
+### Vamos a introducirle a la neurona artificial que ya hemos programado los valores de PCR (Proteína C Reactiva) y los valores de bilirrubina 
+### de pacientes con sospecha de colecistitis, asignándoles la varible "y" y la variable "x", respectivamente, 
+### con el fin de predecir cuanto vale la PCR en pacientes con sospecha de colecistitis a partir de las cifras de bilirrubina.
+### Por lo tanto, introducimos como entrada un array con los valores de bilirrubina que llamamos "x" y un array con los valores de PCR, que llamamos "y", 
+### para que la neurona encuentre las relaciones y aprenda a predecir en el futuro las PCR a partir de las cifras de bilirrubina.
+
+xs = np.array([0.0, 1.0, 2.0, 3.0, 4.0, 5.0], dtype=float)
+ys = np.array([1.0, 4.0, 7.0, 10.0, 13.0, 16.0], dtype=float)
+
+## 5º: Configuración del entrenamiento.
+
+### La neurona comenzará probando con unos hiperparámetros aleatorios. Ajustará esos hiperparámetros (pesos, bias...) y repetirá el proceso 
+### un número de veces o épocas.
+### En este ejemplo, elegimos entrenar 10 épocas.
+
+model.fit(xs, ys, epochs=10)
+
+## 6º: Probar o testar el modelo con datos nuevos. 
+
+### Con la red ya entrenada, podemos ahora intentar predicir el valor de "y" para un valor de "x" y, por tanto, probar el modelo, 
+### con la siguiente función: print ("nombre del modelo".predict ([valor x ,0])
+
+print(model.predict([10.0]))
+
+### Nos dió el siguiente resultado: [[30.316078]]. 
+### Vemos que este ejemplo, se adecúa permfectamente a la función f(x)=3x+1; por tanto si por ejemplo probamos con X=10, la red debería decirnos que el valor 
+### de PCR es de 31. Sin embargo nos da un valor próximo, pero no exactamente 31. Esto es porque, aunque en nuestro ejemplo los 6 valores introducidos se 
+### aproximan de forma perfecta a esa función f(x)=3x+1, en la realidad son pocos valores para concluir por una muestra tan pequeña que toda la realidad 
+### se ajustaría a eso. La probabilidad de que la población en realidad se ajuste a esta recta a la perfección y que sea casualidad que la muestra obtenida 
+### a partir de la misma lo haga está comtemplada por la red y por eso la predicción dada no es exactamente 31.
+### Además, si reiniciamos el entorno de ejecución y volvemos a correr el código, la predicción será ligeramente distinta, dado que los hiperparámetros 
+### de la primera época no serán los mismos puesto que son aleatorios.
+
+# Esta práctica sirve en buena medida de introducción a la programación de redes y a uno de los dos grandes problemas que a día de hoy situan a las redes 
+# neuronales como gold standard: los problemas de regresión. El otro problema (siguiente notebook) que las redes solventan como ningún otro problema son 
+# los problemas de clasificación.
+
