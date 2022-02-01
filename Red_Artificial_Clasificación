@@ -30,6 +30,8 @@ mnist = tf.keras.datasets.fashion_mnist
 ## En el ejemplo de acontinuación vemos la imagen 0 y su etiqueta.
 ## Estos sistemas ven las imágenes como arrays, es decir, como una matríz de 28 filas y 28 columnas.
 
+import matplotlib.pyplot as plt
+
 print('La etiqueta de la imagen escogida es: ', training_labels[0])   #Vemos la etiqueta.
 print(training_images[0])                                             #Vemos la imagen como una matriz de números.
 plt.imshow(training_images[0])                                        #La imagen como la vemos nosotros. 
@@ -82,7 +84,7 @@ model.evaluate(test_images, test_labels)
 
 ## Se pueden hacer nuevas predicciones prediction1, prediction 2... llamando al módulo model.predict e introduciendo como argumento la nueva imagen.
 
-prediction = model.predict(newimage)
+#prediction = model.predict(newimage)
 
 
 
